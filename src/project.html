@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>区块链投票</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="css/form-validation.css" rel="stylesheet">
+  </head>
+
+  <body class="bg-light">
+    <div class="container">
+      <div class="py-5 text-center">
+        <img src="images/title1.svg" alt="" width="" height="">
+        <h2>投票项目初始化</h2>
+      </div>
+
+      <div class="row">
+        <form class="needs-validation" novalidate>
+        <div class="mb-3">
+          <label for="project_name">投票系统名称：</label>
+          <input type="text" class="form-control" id="project_name" placeholder="项目名称">
+
+        </div>
+
+        <div class="mb-3">
+          <label for="select1_name">选项1：</label>
+          <input type="text" class="form-control" id="select1_name" placeholder="选项1" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="select2_name">选项2： </label>
+          <input type="text" class="form-control" id="select2_name" placeholder="选项2">
+        </div>
+
+        <div class="mb-3">
+          <label for="select3_name">选项3：</label>
+          <input type="text" class="form-control" id="select3_name" placeholder="选项3">
+        </div>
+      </form>
+
+      <hr class="mb-4">
+      <button class="btn btn-primary btn-lg btn-block" type="submit">保存</button>
+      </div>
+  </div>
+<!--
+    <div>
+      <h1 align="center">投票项目初始化</h1>
+      <div align="center">
+
+      <h4>投票项目名称：</h4>
+      <input type="text" id="project_name" />
+      <h4>选项1：</h4>
+      <input type="text" id="select1_name" />
+      <h4>选项2：</h4>
+      <input type="text" id="select2_name" />
+      <h4>选项3：</h4>
+      <input type="text" id="select3_name" /><br>
+      <button class="btn btn-default btn-project" type="button" id="project">保存</button>
+      </div>
+    </div>
+-->
+
+
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/project.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
+
+<style>
+  .test-center{
+    text-align: center;
+  }
+  table{
+    width: 50%;
+  }
+  table tr{
+    border-bottom: 2px solid #efefef;
+    height: 40px;
+  }
+</style>

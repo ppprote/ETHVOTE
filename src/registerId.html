@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>区块链投票</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- for pkcs5pkey -->
+    <script src="components/googlecode/core.js"></script>
+    <script src="components/googlecode/cipher-core.js"></script>
+    <script src="components/googlecode/md5.js"></script>
+    <script src="components/googlecode/tripledes.js"></script>
+    <script src="components/googlecode/enc-base64.js"></script>
+    <!-- for crypto -->
+    <script src="components/googlecode/sha1.js"></script>
+    <script src="components/googlecode/sha256.js"></script>
+    <!-- for crypto, asn1, asn1x509 -->
+    <script src="components/yahoo/yahoo-min.js"></script>
+    <!-- for asn1x509(stohex)
+    <script src="http://kjur.github.io/jsjws/base64x-1.1.min.js"></script> -->
+
+    <script language="JavaScript" type="text/javascript" src="ext/jsbn.js"></script>
+    <script language="JavaScript" type="text/javascript" src="ext/jsbn2.js"></script>
+    <script language="JavaScript" type="text/javascript" src="ext/prng4.js"></script>
+    <script language="JavaScript" type="text/javascript" src="ext/rng.js"></script>
+    <script language="JavaScript" type="text/javascript" src="ext/rsa.js"></script>
+    <script language="JavaScript" type="text/javascript" src="ext/rsa2.js"></script>
+    <script language="JavaScript" type="text/javascript" src="ext/base64.js"></script>
+    <script language="JavaScript" type="text/javascript" src="asn1hex-1.1.js"></script>
+    <script language="JavaScript" type="text/javascript" src="rsapem-1.1.js"></script>
+    <script language="JavaScript" type="text/javascript" src="rsasign-1.2.js"></script>
+    <script language="JavaScript" type="text/javascript" src="x509-1.1.js"></script>
+    <script language="JavaScript" type="text/javascript" src="pkcs5pkey-1.0.js"></script>
+    <script language="JavaScript" type="text/javascript" src="asn1-1.0.js"></script>
+    <script language="JavaScript" type="text/javascript" src="asn1x509-1.0.js"></script>
+    <script language="JavaScript" type="text/javascript" src="components/sm2/crypto-1.1.js"></script>
+
+    <script language="JavaScript" type="text/javascript" src="ext/ec.js"></script>
+    <script language="JavaScript" type="text/javascript" src="ext/ec-patch.js"></script>
+    <script language="JavaScript" type="text/javascript" src="ecdsa-modified-1.0.js"></script>
+    <script language="JavaScript" type="text/javascript" src="components/sm2/sm3.js"></script>
+    <script language="JavaScript" type="text/javascript" src="components/sm2/sm3-sm2-1.0.js"></script>
+    <script language="JavaScript" type="text/javascript" src="components/sm2/ecparam-1.0.js"></script>
+    <script language="JavaScript" type="text/javascript" src="components/sm2/sm2.js"></script>
+    <script language="JavaScript" type="text/javascript">
+
+    //function doGenerate() {
+    //  var f1 = document.form1;
+    //  var curve = f1.curve1.value;
+    //  var ec = new KJUR.crypto.ECDSA({"curve": curve});
+    //  var keypair = ec.generateKeyPairHex();
+
+  //    f1.prvkey1.value = keypair.ecprvhex;
+  //    f1.pubkey1.value = keypair.ecpubhex;
+    //}
+
+    function doCrypt() {
+      var f1 = document.form1;
+
+      var curve = f1.curve1.value;
+      var msg1 = f1.register_id1.value;
+      var msgData1 = CryptoJS.enc.Utf8.parse(msg1);
+      var msg2 = f1.register_id2.value;
+      var msgData2 = CryptoJS.enc.Utf8.parse(msg2);
+      var msg3 = f1.register_id3.value;
+      var msgData3 = CryptoJS.enc.Utf8.parse(msg3);
+      var msg4 = f1.register_id4.value;
+      var msgData4 = CryptoJS.enc.Utf8.parse(msg4);
+      var msg5 = f1.register_id5.value;
+      var msgData5 = CryptoJS.enc.Utf8.parse(msg5);
+      var msg6 = f1.register_id6.value;
+      var msgData6 = CryptoJS.enc.Utf8.parse(msg6);
+      var msg7 = f1.register_id7.value;
+      var msgData7 = CryptoJS.enc.Utf8.parse(msg7);
+      var msg8 = f1.register_id8.value;
+      var msgData8 = CryptoJS.enc.Utf8.parse(msg8);
+
+      var pubkeyHex = f1.pubkey1.value;
+      if (pubkeyHex.length > 64 * 2) {
+        pubkeyHex = pubkeyHex.substr(pubkeyHex.length - 64 * 2);
+      }
+
+      var xHex = pubkeyHex.substr(0, 64);
+      var yHex = pubkeyHex.substr(64);
+
+	    var cipherMode = f1.cipherMode.value;
+
+      var cipher = new SM2Cipher(cipherMode);
+      var userKey = cipher.CreatePoint(xHex, yHex);
+
+	    msgData1 = cipher.GetWords(msgData1.toString());
+      msgData2 = cipher.GetWords(msgData2.toString());
+      msgData3 = cipher.GetWords(msgData3.toString());
+      msgData4 = cipher.GetWords(msgData4.toString());
+      msgData5 = cipher.GetWords(msgData5.toString());
+      msgData6 = cipher.GetWords(msgData6.toString());
+      msgData7 = cipher.GetWords(msgData7.toString());
+      msgData8 = cipher.GetWords(msgData8.toString());
+
+      var encryptData1 = cipher.Encrypt(userKey, msgData1);
+      var encryptData2 = cipher.Encrypt(userKey, msgData2);
+      var encryptData3 = cipher.Encrypt(userKey, msgData3);
+      var encryptData4 = cipher.Encrypt(userKey, msgData4);
+      var encryptData5 = cipher.Encrypt(userKey, msgData5);
+      var encryptData6 = cipher.Encrypt(userKey, msgData6);
+      var encryptData7 = cipher.Encrypt(userKey, msgData7);
+      var encryptData8 = cipher.Encrypt(userKey, msgData8);
+      f1.sigval1.value = encryptData1;
+      f1.sigval2.value = encryptData2;
+      f1.sigval3.value = encryptData3;
+      f1.sigval4.value = encryptData4;
+      f1.sigval5.value = encryptData5;
+      f1.sigval6.value = encryptData6;
+      f1.sigval7.value = encryptData7;
+      f1.sigval8.value = encryptData8;
+    }
+
+    /*function doDecrypt() {
+      var f1 = document.form1;
+      var prvkey = f1.prvkey1.value;
+      var encryptData = f1.sigval1.value;
+
+      var privateKey = new BigInteger(prvkey, 16);
+
+	     var cipherMode = f1.cipherMode.value;
+
+       var cipher = new SM2Cipher(cipherMode);
+       var data = cipher.Decrypt(privateKey, encryptData);
+
+       alert(data ? '解密成功，原文：' + data : '解密失败！');
+     }
+
+
+     function certCrypt() {
+  	    var certData = document.getElementById('txtCertData').value;
+  	    if( certData != "") {
+  		       var key = X509.getPublicKeyFromCertPEM(certData);
+		    document.getElementById('txtPubKey').value = key.pubKeyHex;
+  	}
+
+  	var pubkey = document.getElementById('txtPubKey').value.replace(/\s/g,'');
+
+
+    var pubkeyHex = pubkey;
+    if (pubkeyHex.length > 64 * 2) {
+        pubkeyHex = pubkeyHex.substr(pubkeyHex.length - 64 * 2);
+    }
+
+    var xHex = pubkeyHex.substr(0, 64);
+    var yHex = pubkeyHex.substr(64);
+
+	   var cipherMode = document.getElementById('cipherMode').value;
+
+     var cipher = new SM2Cipher(cipherMode);
+     var userKey = cipher.CreatePoint(xHex, yHex);
+
+	   var msg = document.getElementById('txtRawData').value;
+	   var msgData = CryptoJS.enc.Utf8.parse(msg);
+	   msgData = cipher.GetWords(msgData.toString());
+
+    var encryptData = cipher.Encrypt(userKey, msgData);
+    document.getElementById('txtCryptData').value = hex2b64(encryptData);
+  }
+  */
+  </script>
+
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+
+  <!-- Custom styles for this template -->
+  <link href="css/form-validation.css" rel="stylesheet">
+  </head>
+
+  <body class="bg-light">
+
+    <div class="container">
+      <div class="py-5 text-center">
+        <img src="images/title1.svg" alt="" width="" height="">
+        <h2>设置注册码</h2>
+      </div>
+
+      <div class="row">
+
+        <section id="main_content" class="inner">
+          <!-- now editing -->
+          <form name="form1" class="needs-validation"  novalidate>
+              <div class="mb-3">
+                <label>1、密钥对</label><br/>
+                椭圆曲线加密名称:
+                <select name="curve1">
+                  <option value="sm2">SM2
+                </select>
+                <!--input type="button" value="生成密钥对" onClick="doGenerate();"/><br/-->
+                <br>
+                  <!--私钥 (十六进制): <input type="text"  class="form-control" name="prvkey1" id="prvkey1" /-->
+                  公钥 (十六进制): <input type="text"  class="form-control" name="pubkey1" id="pubkey1" />
+              </div>
+
+              <hr class="mb-4">
+              <!-- ============================================================== -->
+              <div class="mb-3">
+                <label>2、输入需要加密的注册码:</label><br/>
+
+                加密方式:
+                <select id="cipherMode" name="cipherMode">
+                  <option value="1" selected="selected">C1C3C2
+                </select>
+                <br/>
+                  注册码1：<input type="text" class="form-control" id="register_id1" name="register_id1" />
+                  注册码2：<input type="text" class="form-control" id="register_id2" name="register_id2" />
+                  注册码3：<input type="text" class="form-control"id="register_id3" name="register_id3" />
+                  注册码4：<input type="text" class="form-control" id="register_id4" name="register_id4" />
+                  注册码5：<input type="text" class="form-control" id="register_id5" name="register_id5" />
+                  注册码6：<input type="text" class="form-control" id="register_id6" name="register_id6" />
+                  注册码7：<input type="text" class="form-control" id="register_id7" name="register_id7" />
+                  注册码8：<input type="text" class="form-control" id="register_id8" name="register_id8" />
+                <input type="button" value="加密注册码" onClick="doCrypt();"/>
+
+
+              </div>
+
+              <hr class="mb-4">
+
+              <div class="mb-3">
+                <label>3、加密后的注册码 (十六进制): </label><br/>
+                  注册码1：<input type="text" class="form-control" id="sigval1" name="sigval1" value="" />
+                  注册码2：<input type="text" class="form-control" id="sigval2" name="sigval2" value="" />
+                  注册码3：<input type="text" class="form-control" id="sigval3" name="sigval3" value="" />
+                  注册码4：<input type="text" class="form-control" id="sigval4" name="sigval4" value="" />
+                  注册码5：<input type="text" class="form-control" id="sigval5" name="sigval5" value="" />
+                  注册码6：<input type="text" class="form-control" id="sigval6" name="sigval6" value="" />
+                  注册码7：<input type="text" class="form-control" id="sigval7" name="sigval7" value="" />
+                  注册码8：<input type="text" class="form-control" id="sigval8" name="sigval8" value="" />
+              </div>
+
+          </form>
+          <hr class="mb-4">
+          <button class="btn btn-primary btn-lg btn-block" type="submit">确定</button>
+
+          <!-- now editing -->
+      </section>
+    </div>
+    </div>
+
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/registerId.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

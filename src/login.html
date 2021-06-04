@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>区块链投票</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- for pkcs5pkey -->
+    <script src="components/googlecode/core.js"></script>
+    <script src="components/googlecode/cipher-core.js"></script>
+    <script src="components/googlecode/md5.js"></script>
+    <script src="components/googlecode/tripledes.js"></script>
+    <script src="components/googlecode/enc-base64.js"></script>
+    <!-- for crypto -->
+    <script src="components/googlecode/sha1.js"></script>
+    <script src="components/googlecode/sha256.js"></script>
+    <!-- for crypto, asn1, asn1x509 -->
+    <script src="components/yahoo/yahoo-min.js"></script>
+    <!-- for asn1x509(stohex)
+    <script src="http://kjur.github.io/jsjws/base64x-1.1.min.js"></script> -->
+
+    <script language="JavaScript" type="text/javascript" src="ext/jsbn.js"></script>
+    <script language="JavaScript" type="text/javascript" src="ext/jsbn2.js"></script>
+    <script language="JavaScript" type="text/javascript" src="ext/prng4.js"></script>
+    <script language="JavaScript" type="text/javascript" src="ext/rng.js"></script>
+    <script language="JavaScript" type="text/javascript" src="ext/rsa.js"></script>
+    <script language="JavaScript" type="text/javascript" src="ext/rsa2.js"></script>
+    <script language="JavaScript" type="text/javascript" src="ext/base64.js"></script>
+    <script language="JavaScript" type="text/javascript" src="asn1hex-1.1.js"></script>
+    <script language="JavaScript" type="text/javascript" src="rsapem-1.1.js"></script>
+    <script language="JavaScript" type="text/javascript" src="rsasign-1.2.js"></script>
+    <script language="JavaScript" type="text/javascript" src="x509-1.1.js"></script>
+    <script language="JavaScript" type="text/javascript" src="pkcs5pkey-1.0.js"></script>
+    <script language="JavaScript" type="text/javascript" src="asn1-1.0.js"></script>
+    <script language="JavaScript" type="text/javascript" src="asn1x509-1.0.js"></script>
+    <script language="JavaScript" type="text/javascript" src="components/sm2/crypto-1.1.js"></script>
+
+    <script language="JavaScript" type="text/javascript" src="ext/ec.js"></script>
+    <script language="JavaScript" type="text/javascript" src="ext/ec-patch.js"></script>
+    <script language="JavaScript" type="text/javascript" src="ecdsa-modified-1.0.js"></script>
+    <script language="JavaScript" type="text/javascript" src="components/sm2/sm3.js"></script>
+    <script language="JavaScript" type="text/javascript" src="components/sm2/sm3-sm2-1.0.js"></script>
+    <script language="JavaScript" type="text/javascript" src="components/sm2/ecparam-1.0.js"></script>
+    <script language="JavaScript" type="text/javascript" src="components/sm2/sm2.js"></script>
+    <script language="JavaScript" type="text/javascript">
+    //function doGenerate() {
+    //  var f1 = document.form1;
+    //  var curve = f1.curve1.value;
+    //  var ec = new KJUR.crypto.ECDSA({"curve": curve});
+    //  var keypair = ec.generateKeyPairHex();
+
+  //    f1.prvkey1.value = keypair.ecprvhex;
+  //    f1.pubkey1.value = keypair.ecpubhex;
+    //}
+
+    function doCrypt() {
+      var f1 = document.form1;
+
+      var curve = f1.curve1.value;
+      var msg = f1.msg1.value;
+      var msgData = CryptoJS.enc.Utf8.parse(msg);
+
+      var pubkeyHex = f1.pubkey1.value;
+      if (pubkeyHex.length > 64 * 2) {
+        pubkeyHex = pubkeyHex.substr(pubkeyHex.length - 64 * 2);
+      }
+
+      var xHex = pubkeyHex.substr(0, 64);
+      var yHex = pubkeyHex.substr(64);
+
+	    var cipherMode = f1.cipherMode.value;
+
+      var cipher = new SM2Cipher(cipherMode);
+      var userKey = cipher.CreatePoint(xHex, yHex);
+
+	    msgData = cipher.GetWords(msgData.toString());
+
+      var encryptData = cipher.Encrypt(userKey, msgData);
+      f1.sigval1.value = encryptData;
+    }
+
+
+        /*function doDecrypt() {
+          var f1 = document.form1;
+          var prvkey = f1.prvkey1.value;
+          var encryptData = f1.sigval1.value;
+
+          var privateKey = new BigInteger(prvkey, 16);
+
+    	     var cipherMode = f1.cipherMode.value;
+
+           var cipher = new SM2Cipher(cipherMode);
+           var data = cipher.Decrypt(privateKey, encryptData);
+
+           alert(data ? '解密成功，原文：' + data : '解密失败！');
+         }
+
+
+         function certCrypt() {
+      	    var certData = document.getElementById('txtCertData').value;
+      	    if( certData != "") {
+      		       var key = X509.getPublicKeyFromCertPEM(certData);
+    		    document.getElementById('txtPubKey').value = key.pubKeyHex;
+      	}
+
+      	var pubkey = document.getElementById('txtPubKey').value.replace(/\s/g,'');
+
+
+        var pubkeyHex = pubkey;
+        if (pubkeyHex.length > 64 * 2) {
+            pubkeyHex = pubkeyHex.substr(pubkeyHex.length - 64 * 2);
+        }
+
+        var xHex = pubkeyHex.substr(0, 64);
+        var yHex = pubkeyHex.substr(64);
+
+    	   var cipherMode = document.getElementById('cipherMode').value;
+
+         var cipher = new SM2Cipher(cipherMode);
+         var userKey = cipher.CreatePoint(xHex, yHex);
+
+    	   var msg = document.getElementById('txtRawData').value;
+    	   var msgData = CryptoJS.enc.Utf8.parse(msg);
+    	   msgData = cipher.GetWords(msgData.toString());
+
+        var encryptData = cipher.Encrypt(userKey, msgData);
+        document.getElementById('txtCryptData').value = hex2b64(encryptData);
+      }
+      */
+  </script>
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+  <!-- Custom styles for this template -->
+  <link href="css/form-validation.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+  <div class="container">
+    <div class="py-5 text-center">
+      <img src="images/title1.svg" alt="" width="" height="">
+      <h2>注册</h2>
+    </div>
+
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+
+        <!-- now editing -->
+        <form name="form1">
+          <div class="mb-3">
+            <label>1、系统生成的公钥</label><br/>
+            椭圆曲线加密名称:
+            <select name="curve1">
+              <option value="sm2">SM2
+            </select>
+            <!--input type="button" value="生成密钥对" onClick="doGenerate();"/><br/-->
+            <br>
+              <!--私钥 (十六进制): <input type="text"  class="form-control" name="prvkey1" id="prvkey1" /-->
+              公钥 (十六进制): <input type="text"  class="form-control" name="pubkey1" id="pubkey1" />
+          </div>
+          <hr class="mb-4">
+
+          <!-- ============================================================== -->
+
+          <label for="sig">2、加密注册码</label><br>
+          加密方式:
+          <select id="cipherMode" name="cipherMode">
+            <option value="1" selected="selected">C1C3C2
+          </select><br/>
+
+          需要加密的注册码:
+            <input type="text" name="msg1" class="form-control" value="" />
+            <input type="button" value="加密注册码" onClick="doCrypt();"/><br/>
+
+          <hr class="mb-4">
+          <label for="data">3、加密后的注册码 (十六进制)</label><br>
+            <p>
+              <input type="text" id="sigval1" class="form-control" name="sigval1" value="" />
+            </p>
+            <!--
+            <button class="btn btn-default btn-vote" type="button" >注册</button>
+          -->
+          </form>
+          <hr class="mb-4">
+          <button class="btn btn-primary btn-lg btn-block" type="submit">注册</button>
+
+          <!-- now editing -->
+
+      </section>
+    </div>
+
+  </div>
+
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
+
+<style>
+  .test-center{
+    text-align: center;
+  }
+  table{
+    width: 50%;
+  }
+  table tr{
+    border-bottom: 2px solid #efefef;
+    height: 40px;
+  }
+</style>

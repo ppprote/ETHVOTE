@@ -1,0 +1,116 @@
+{
+  "contractName": "VoteCrypt",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.16+commit.9c3226ce\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/C/Users/prote/Desktop/Study/VotingDApp/contracts/VoteCrypt.sol\":\"VoteCrypt\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/prote/Desktop/Study/VotingDApp/contracts/VoteCrypt.sol\":{\"keccak256\":\"0xeae1e61ad52b7e253ad58ee3a5910db5cab863415a41af73cc54954035c3b1ca\",\"urls\":[\"bzz-raw://fdaa94cf2331e044dbc7e4f092da0a11eec9644a1572f84174d1938567f79dc3\",\"dweb:/ipfs/QmYLPrgdZioH7H5pQaR6uRLsMbyiFsVZ2YmnSME6B1FwTR\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603e80601d6000396000f3fe6080604052600080fdfea265627a7a72315820ba8a8737c162fef31bfd2be80f0a870bd41f7b27220b95a3d49103e56069a11564736f6c63430005100032",
+  "deployedBytecode": "0x6080604052600080fdfea265627a7a72315820ba8a8737c162fef31bfd2be80f0a870bd41f7b27220b95a3d49103e56069a11564736f6c63430005100032",
+  "sourceMap": "25:26:1:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;25:26:1;;;;;;;",
+  "deployedSourceMap": "25:26:1:-;;;;;",
+  "source": "pragma solidity ^0.5.0;\r\ncontract VoteCrypt{\r\n  \r\n}\r\n",
+  "sourcePath": "C:/Users/prote/Desktop/Study/VotingDApp/contracts/VoteCrypt.sol",
+  "ast": {
+    "absolutePath": "/C/Users/prote/Desktop/Study/VotingDApp/contracts/VoteCrypt.sol",
+    "exportedSymbols": {
+      "VoteCrypt": [
+        59
+      ]
+    },
+    "id": 60,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 58,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:1"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 59,
+        "linearizedBaseContracts": [
+          59
+        ],
+        "name": "VoteCrypt",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 60,
+        "src": "25:26:1"
+      }
+    ],
+    "src": "0:53:1"
+  },
+  "legacyAST": {
+    "attributes": {
+      "absolutePath": "/C/Users/prote/Desktop/Study/VotingDApp/contracts/VoteCrypt.sol",
+      "exportedSymbols": {
+        "VoteCrypt": [
+          59
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.5",
+            ".0"
+          ]
+        },
+        "id": 58,
+        "name": "PragmaDirective",
+        "src": "0:23:1"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            59
+          ],
+          "name": "VoteCrypt",
+          "nodes": [
+            null
+          ],
+          "scope": 60
+        },
+        "id": 59,
+        "name": "ContractDefinition",
+        "src": "25:26:1"
+      }
+    ],
+    "id": 60,
+    "name": "SourceUnit",
+    "src": "0:53:1"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.16+commit.9c3226ce.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.3.4",
+  "updatedAt": "2021-05-04T19:51:01.362Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}
